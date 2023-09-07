@@ -1,0 +1,2 @@
+en muista näit komentoi muuten
+start: "node index.js"
