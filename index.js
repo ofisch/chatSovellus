@@ -12,9 +12,9 @@ io.on("connection", (socket) => {
 
   socket.on("send-nickname", (nickname) => {
     socket.nickname = nickname;
-    users.push(socket.nickname);
+    //users.push(socket.nickname);
     console.log("index.js nick: ", nickname);
-    console.log("users: ", users);
+    //console.log("users: ", users);
   });
 
   socket.on("disconnect", () => {
