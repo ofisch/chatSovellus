@@ -7,14 +7,27 @@ const io = require("socket.io")(http);
 
 app.use(express.static("public"));
 
+let users = [];
+
 io.on("connection", (socket) => {
   console.log("a user connected", socket.id);
 
   socket.on("send-nickname", (nickname) => {
     socket.nickname = nickname;
-    //users.push(socket.nickname);
     console.log("index.js nick: ", nickname);
-    //console.log("users: ", users);
+
+    const user = {
+      nickname: nickname,
+      id: socket.id,
+    };
+
+    users.push(user);
+    console.log("users: ", users);
+    io.emit("new user", users);
+  });
+
+  socket.on("join-room", (roomName, cb) => {
+    socket.join(roomName);
   });
 
   socket.on("disconnect", () => {
