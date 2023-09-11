@@ -8,6 +8,9 @@ const io = require("socket.io")(http);
 app.use(express.static("public"));
 
 let users = [];
+let rooms = [];
+
+let testRoom = "general";
 
 io.on("connection", (socket) => {
   console.log("a user connected", socket.id);
@@ -26,12 +29,18 @@ io.on("connection", (socket) => {
     io.emit("new user", users);
   });
 
-  socket.on("join-room", (roomName, cb) => {
-    socket.join(roomName);
+  socket.on("join-room", (room) => {
+    socket.join(room);
+    io.to(room).emit("tää huone on: " + room);
   });
 
   socket.on("disconnect", () => {
     console.log("a user disconnected", socket.id);
+    for (let user of users) {
+      if (user.id == socket.id) {
+        users.splice(users.indexOf(user));
+      }
+    }
   });
 
   socket.on("chat message", (msg) => {

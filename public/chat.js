@@ -18,12 +18,13 @@ document
     const nicknameInput = document.getElementById("nickname");
     console.log("nick: ", nicknameInput.value);
     socket.emit("send-nickname", nicknameInput.value);
-    //socket.emit("sendNickname", nickname);
 
     enterNicknameForm.hidden = true;
 
     messageBox.hidden = false;
     sendButton.hidden = false;
+
+    socket.emit("join-room", "general");
   });
 
 document.getElementById("send-message").addEventListener("submit", (event) => {
@@ -34,8 +35,14 @@ document.getElementById("send-message").addEventListener("submit", (event) => {
   inp.value = "";
 });
 
+socket.on("join-room", (room) => {
+  const currentRoom = document.getElementById("current-room");
+  currentRoom.innerText = room;
+  console.log("huone");
+});
+
 socket.on("chat message", (msg) => {
   const item = document.createElement("li");
-  item.innerHTML = msg;
+  item.innerText = msg;
   document.getElementById("messages").appendChild(item);
 });
