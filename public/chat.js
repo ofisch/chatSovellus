@@ -1,41 +1,36 @@
-"use strict";
+const socket = io();
+// If server is located on another server use:
+//const socket = io('https://<chat-server-addres>:3000');
 
-// Server URL below must point to your server, localhost works for local development/testing
-const socket = io("http://localhost:3000");
+const messages = document.getElementById("messages");
+const msgForm = document.getElementById("input-form");
+const msgInput = msgForm.getElementsByTagName("input")[0];
+const joinForm = document.getElementById("join-form");
+const usernameInput = joinForm.getElementsByTagName("input")[0];
+document.getElementById("chat").classList = "hidden";
 
-const messageBox = document.getElementById("m");
-messageBox.hidden = true;
-const sendButton = document.getElementById("send");
-sendButton.hidden = true;
-
-const enterNicknameForm = document.getElementById("enter-nickname");
-
-document
-  .getElementById("enter-nickname")
-  .addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    const nicknameInput = document.getElementById("nickname");
-    console.log("nick: ", nicknameInput.value);
-    socket.emit("send-nickname", nicknameInput.value);
-    //socket.emit("sendNickname", nickname);
-
-    enterNicknameForm.hidden = true;
-
-    messageBox.hidden = false;
-    sendButton.hidden = false;
-  });
-
-document.getElementById("send-message").addEventListener("submit", (event) => {
+msgForm.addEventListener("submit", (event) => {
   event.preventDefault();
+  if (msgInput.value) {
+    socket.emit("chat message", msgInput.value);
+    msgInput.value = "";
+  }
+});
 
-  const inp = document.getElementById("m");
-  socket.emit("chat message", nickname.value + ":" + inp.value);
-  inp.value = "";
+joinForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  if (usernameInput.value) {
+    socket.emit("join", usernameInput.value);
+    usernameInput.value = "";
+    document.getElementById("login").classList = "hidden";
+    document.getElementById("chat").classList = "";
+    msgInput.focus();
+  }
 });
 
 socket.on("chat message", (msg) => {
   const item = document.createElement("li");
-  item.innerHTML = msg;
-  document.getElementById("messages").appendChild(item);
+  item.textContent = msg;
+  messages.appendChild(item);
+  window.scrollTo(0, document.body.scrollHeight);
 });

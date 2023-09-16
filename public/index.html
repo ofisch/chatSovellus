@@ -1,52 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="/dist/output.css" rel="stylesheet" />
+    <title>Socket.IO chat</title>
+
+    <link rel="stylesheet" href="style.css" />
+
     <script src="/socket.io/socket.io.js"></script>
-    <script src="./js/flowbyte.js"></script>
+
     <script defer src="chat.js"></script>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.css"
-      rel="stylesheet"
-    />
-    <script src="../switch.js"></script>
-    <title>Chat app</title>
-    <script>
-      // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-      if (
-        localStorage.getItem("color-theme") === "dark" ||
-        (!("color-theme" in localStorage) &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches)
-      ) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-    </script>
   </head>
+
   <body>
-    <button
-      id="theme-toggle"
-      type="button"
-      class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
-    >
-      mo
-    </button>
+    <section id="login">
+      <form id="join-form">
+        <input id="username" />
 
-    <button class="bg-blue-600">aa</button>
+        <button type="submit">Join</button>
+      </form>
+    </section>
 
-    <form id="enter-nickname">
-      <input type="text" id="nickname" placeholder="nickname" />
-      <button type="submit" id="join">Join</button>
-    </form>
+    <section id="chat">
+      <ul id="messages"></ul>
 
-    <form id="send-message">
-      <input type="text" id="m" placeholder="message" />
-      <button type="submit" id="send">Send</button>
-    </form>
-    <ul id="messages"></ul>
+      <form id="input-form">
+        <input id="message" autocomplete="off" />
+
+        <button>Send</button>
+      </form>
+    </section>
   </body>
 </html>
